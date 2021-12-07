@@ -28,19 +28,15 @@ const Login = () => {
     const onClickLogIn = async (d) => {
         await fetch('http://localhost:8080/hotel/login', {
             method: 'post',
-            body: JSON.stringify({
-                username: d.username,
-                password: d.password
-            }),
             mode: 'no-cors',
             headers: {
+                "Authorization" : "Basic" + btoa(d.username+":" + d.password),
                 "Content-type": "application/json; charset=UTF-8",
                 'Access-Control-Allow-Origin' : '*',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
             }
         }).then(res => {
             console.log(res.body);
-            alert(res.body);
         })
 
     }

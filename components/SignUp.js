@@ -41,7 +41,6 @@ const SignUp = () => {
             }
         }).then(res => {
             console.log(res);
-            alert(res);
         })
     }
     return (

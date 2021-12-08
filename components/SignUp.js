@@ -1,19 +1,7 @@
 import styles from "../styles/Login.module.css";
-import axios from "axios";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-
-axios.create(
-    {
-        baseURL: "http://localhost:8080",
-        withCredentials: false,
-        headers: {
-            'Content-Type': 'Authorization',
-            'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        }
-    })
-
+import axios from 'axios';
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState('password');
     const {register, handleSubmit} = useForm();
@@ -25,23 +13,23 @@ const SignUp = () => {
         }
     }
     const onClickSignUp = async (d) => {
-        await fetch('http://localhost:8080/hotel/signup', {
-            method: 'post',
-            body: JSON.stringify({
-                username: d.username,
-                password: d.password,
-                surname: d.surname,
-                name: d.name
-            }),
-            mode: 'no-cors',
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            }
-        }).then(res => {
-            console.log(res);
-        })
+        await fetch(
+            'http://localhost:8080/hotel/signup',{
+                method: 'post',
+                body: JSON.stringify({
+                    username: d.username,
+                    password: d.password,
+                    surname: d.surname,
+                    name: d.name
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': "*",
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+                },
+            }).then(response => response.json())
+            .then(json => console.log(json.body));
+
     }
     return (
             <div className={styles.loginForm}>

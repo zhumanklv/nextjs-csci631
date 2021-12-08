@@ -31,12 +31,12 @@ const Login = () => {
             mode: 'no-cors',
             headers: {
                 "Authorization" : "Basic" + btoa(d.username+":" + d.password),
-                "Content-type": "application/json; charset=UTF-8",
+                "Content-type": "application/json;charset=UTF-8",
                 'Access-Control-Allow-Origin' : '*',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
             }
         }).then(res => {
-            console.log(res.body);
+            console.log(res.json());
         })
 
     }

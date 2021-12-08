@@ -13,6 +13,7 @@
 }
 .navBarList{
   display: flex;
+  align-items: center;
   list-style: none;
   color: white;
   position: absolute;
@@ -101,3 +102,21 @@
   align-items: center;
 }
 
+.logIn{
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #E0B973;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #14274A;
+  font-weight: 900;
+}
+
+.listLogOut{
+  width: 70px;
+
+  margin-left: 100px;
+}

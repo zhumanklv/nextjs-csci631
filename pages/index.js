@@ -2,8 +2,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 import styles from '../styles/Home.module.css'
+import {useRouter} from "next/router";
 
 export default function Home() {
+    const router = useRouter();
   return (
       <>
       <div className={styles.intro}>
@@ -11,7 +13,7 @@ export default function Home() {
           <ul className={styles.navBarList}>
                 <li className={styles.navBarListItem}><Link href="/">Home</Link></li>
                 <li className={styles.navBarListItem}><Link href="/">Rooms</Link></li>
-                <li className={styles.navBarListItem}><Link href="/login">Log in</Link></li>
+                <li className={styles.navBarListItem + " " + styles.listLogOut}><button onClick={() => {router.push('/login')}} className={styles.logIn}>Log In</button></li>
           </ul>
         </nav>
         <div className={styles.introMain}>

@@ -26,19 +26,19 @@ const Login = () => {
         }
     }
     const onClickLogIn = async (d) => {
-        await fetch('http://localhost:8080/hotel/login', {
-            method: 'post',
-            mode: 'no-cors',
+        $.post({
+            url: "http://localhost:8080/hotel/login",
             headers: {
-                "Authorization" : "Basic" + btoa(d.username+":" + d.password),
-                "Content-type": "application/json;charset=UTF-8",
+                "referrer-policy" : "no-referrer",
                 'Access-Control-Allow-Origin' : '*',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                "Access-Control-Allow-Credentials" : true,
+                "Content-type": "application/json; charset=utf-8",
+                "Authorization": "Basic" + Buffer.from(d.username).toString('base64') + ":" + Buffer.from(d.password).toString('base64')
             }
-        }).then(res => {
-            console.log(res.json());
-        })
-
+        }).done(function(data) {
+            alert(data);
+        });
     }
     return (
         <div className={styles.outer}>

@@ -1,8 +1,12 @@
 import styles from "../styles/Login.module.css";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import axios from 'axios';
+import {UserContext} from "./UserContext";
+import {useRouter} from "next/router";
 const SignUp = () => {
+    const router = useRouter();
+    const [_, setUser] = useContext(UserContext);
     const [showPassword, setShowPassword] = useState('password');
     const {register, handleSubmit} = useForm();
     const passwordImg = () => {
@@ -13,28 +17,21 @@ const SignUp = () => {
         }
     }
     const onClickSignUp = async (d) => {
-        await fetch(
-            'http://localhost:8080/hotel/signup',{
-                method: 'post',
-                body: JSON.stringify({
-                    username: d.username,
-                    password: d.password,
-                    surname: d.surname,
-                    name: d.name
-                }),
-                headers: {
-                    'Access-Control-Allow-Origin': "*",
-                'Content-type': 'application/json; charset=UTF-8',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-                },
-            }).then(response => response.json())
-            .then(json => console.log(json.body));
-
+        $.post("http://localhost:8080/hotel/signup", JSON.stringify({
+            username: d.username,
+            password: d.password,
+            surname: d.surname,
+            name: d.name
+        }), function(response) {
+            localStorage.setItem('access_token', response.access_token);
+            setUser({username: response.username, name: response.name, surname: response.surname, access_token: response.access_token});
+            router.push('/user');
+        })
     }
     return (
             <div className={styles.loginForm}>
                 <form onSubmit={handleSubmit(onClickSignUp)}>
-                    <div style = {{marginTop: 0, paddingRight: 0,}}className={styles.loginFormPassword}>
+                    <div style = {{marginTop: 0, paddingRight: 0,}} className={styles.loginFormPassword}>
                         <input
                             style={{ width: '88%'}}
                             className={styles.inputPassword}

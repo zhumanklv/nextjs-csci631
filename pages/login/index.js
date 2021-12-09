@@ -36,6 +36,17 @@ const Login = () => {
             Cookies.set('name', data.name);
             Cookies.set('surname', data.surname);
             Cookies.set('access_token', data.access_token);
+            if(data.position && data.position === 'desk-clerk'){
+                Cookies.set('position', 'desk-clerk');
+                router.push('/desk-clerk');
+                return;
+            }else if(data.position && data.position === 'manager'){
+                Cookies.set('position', 'manager');
+                router.push('/managers');
+                return;
+            }else{
+                Cookies.set('position', 'user');
+            }
             router.push('/user');
         });
     }

@@ -1,17 +1,24 @@
 import styles from '../../styles/Rooms.module.css';
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import {Checkbox} from "@mui/material";
 import DatePicker from "sassy-datepicker";
 import Link from "next/link";
 import Cookies from "js-cookie";
+
+const fillInfo = createContext();
 const Rooms = () => {
+    const [fill, setFill] = useState({});
     const [calendar1, setCalendar1] = useState(false);
     const [calendar2, setCalendar2] = useState(false);
     const [checkIn, setCheckIn] = useState((new Date).getDate()+"."+ (new Date).getMonth()+"." +(new Date).getFullYear());
     const [checkOut, setCheckOut] = useState((new Date).getDate()+"."+ (new Date).getMonth()+"." +(new Date).getFullYear());
+    const [dayOfWeek, setDay] = useState(0);
     const router = useRouter();
-    const arr = [{occupied : true, price: 45000}, {occupied: false, price: 200000}];
+    const [arr, setArr] = useState([]);
+    useEffect(()=>{
+        console.log(arr, arr);
+    }, [arr]);
     const [aktau, setAktau] = useState(false);
     const [alakol, setAlakol] = useState(false);
     const [value, onChange] = useState(new Date());
@@ -19,6 +26,8 @@ const Rooms = () => {
         if(!Cookies.get('access_token')) {
             alert('Please log in first');
             router.push('/login');
+        }else{
+            router.push('/fill-info');
         }
     }
 
@@ -31,28 +40,34 @@ const Rooms = () => {
 
     const onSearch = async () => {
         let path;
-        if(!aktau && alakol){
+        if (!aktau && alakol) {
             path = '&hotel=1';
-        }else if(!alakol && aktau){
+        } else if (!alakol && aktau) {
             path = '&hotel=2';
-        }else{
-            path='';
+        } else {
+            path = '&hotel=1';
         }
         let cin = checkIn.split('.').reverse();
         let cout = checkOut.split('.').reverse();
+        const s1 = cin[0] + "-" + cin[1] + "-" + cin[2];
+        const s2 = cout[0] + "-" + cout[1] + "-" + cout[2];
         console.log('cin', cin);
         console.log('cout', cout);
-        $.get({
+        $.ajax({
+            method: "POST",
             url: "http://localhost:8080/hotel/rooms?reserve=free" + path,
-            body: JSON.stringify({
-                cin: cin[0] + "-" + cin[1] + "-" + cin[2],
-                cout: cout[0] + "-" + cout[1] + "-" + cout[2]
-            })
-        }).done(
-            function(data) {
-                console.log(data);
+            headers : {
+                "content-type": "text/plain;charset=UTF-8" // Add this line
+            },
+            data: JSON.stringify({
+                "cin": s1,
+                "cout": s2
+            }),
+            success: function (e) {
+                setArr(e[0].rooms);
+                console.log(e);
             }
-        );
+        });
     }
     return (
         <>
@@ -102,15 +117,16 @@ const Rooms = () => {
             <div className={styles.main}>
                 <ul className={styles.list}>
                     {
-                        arr && arr.map(room => {
+                        Array.isArray(arr) && arr.map((room, i) => {
                             return (
-                                <li className={styles.listItem}>
+                                <li className={styles.listItem} key={i}>
                                     <div className={styles.roomOuter}>
-                                        <div className="listImg"><img src="/download.jpeg" alt="room"/></div>
+                                        <div className={styles.listImg}><img src="/download.jpeg" alt="room"/></div>
                                         <div>
-                                            <p>Price: {room.price}</p>
-                                            <p>Occupied: {room.occupied}</p>
-                                            <button onClick={bookRoom}>Book it now!</button>
+                                            <p>Room number: {room.room_number}</p>
+                                            <p>Floor: {room.floor}</p>
+                                            <p>Type: {room.type}</p>
+                                            <button onClick={bookRoom} className={styles.bookNow}>Book it now!</button>
                                         </div>
                                     </div>
                                 </li>
@@ -121,6 +137,7 @@ const Rooms = () => {
             </div>
             {calendar1 && (<div className={styles.calendar1}>
                                 <DatePicker onChange={(d) => {
+                                    setDay(d.getDay());
                                     let date = d.getDate();
                                     if(date < 10){
                                         date = "0" + date;

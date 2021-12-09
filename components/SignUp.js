@@ -19,10 +19,10 @@ const SignUp = () => {
     }
     const onClickSignUp = async (d) => {
         $.post("http://localhost:8080/hotel/signup", JSON.stringify({
-            username: d.username,
-            password: d.password,
-            surname: d.surname,
-            name: d.name
+                username: d.username,
+                password: d.password,
+                surname: d.surname,
+                name: d.name
         }), function(response) {
             Cookies.set('name', response.name);
             Cookies.set('surname', response.surname);

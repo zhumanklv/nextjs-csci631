@@ -68,8 +68,11 @@
 }
 
 .roomOuter{
+    margin: 0 auto;
+    width: 700px;
     display: flex;
     align-items: center;
+    justify-content: space-around;
 }
 
 .listImg{
@@ -81,6 +84,9 @@
 
 .listItem{
     margin-bottom: 20px;
+    width: 500px;
+    height: 300px;
+    padding: 20px 10px;
 }
 
 .filters{
@@ -126,6 +132,7 @@
 }
 
 .searchButton{
+    cursor: pointer;
     margin-left: 50px;
     width: 120px;
     height: 40px;
@@ -139,6 +146,20 @@
     font-size: 20px;
     color: white;
     background-color: #14274A;
+}
+
+.bookNow{
+    margin-top: 20px;
+    border-radius: 7px;
+    width: 120px;
+    height: 50px;
+    background: #14274A;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    outline: none;
 }
 
 

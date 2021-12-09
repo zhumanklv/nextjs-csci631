@@ -3,7 +3,7 @@ import {set, useForm} from "react-hook-form";
 import {useRouter} from "next/router";
 import axios from 'axios';
 import {useContext, useState} from "react";
-import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
 import SignUp from "../../components/SignUp";
 import {UserContext} from "../../components/UserContext";
 const Login = () => {
@@ -29,15 +29,14 @@ const Login = () => {
         $.post({
             url: "http://localhost:8080/hotel/login",
             headers: {
-                "referrer-policy" : "no-referrer",
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                "Access-Control-Allow-Credentials" : true,
                 "Content-type": "application/json; charset=utf-8",
-                "Authorization": "Basic" + Buffer.from(d.username).toString('base64') + ":" + Buffer.from(d.password).toString('base64')
+                "Authorization": "Basic " + Buffer.from(d.username + ":" + d.password).toString('base64')
             }
         }).done(function(data) {
-            alert(data);
+            Cookies.set('name', data.name);
+            Cookies.set('surname', data.surname);
+            Cookies.set('access_token', data.access_token);
+            router.push('/user');
         });
     }
     return (

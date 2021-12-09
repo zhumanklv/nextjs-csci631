@@ -4,6 +4,7 @@ import {useContext, useState} from "react";
 import axios from 'axios';
 import {UserContext} from "./UserContext";
 import {useRouter} from "next/router";
+import Cookies from "js-cookie";
 const SignUp = () => {
     const router = useRouter();
     const [_, setUser] = useContext(UserContext);
@@ -23,8 +24,9 @@ const SignUp = () => {
             surname: d.surname,
             name: d.name
         }), function(response) {
-            localStorage.setItem('access_token', response.access_token);
-            setUser({username: response.username, name: response.name, surname: response.surname, access_token: response.access_token});
+            Cookies.set('name', response.name);
+            Cookies.set('surname', response.surname);
+            Cookies.set('access_token', response.access_token);
             router.push('/user');
         })
     }

@@ -8,13 +8,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.3",
+    "@mui/styled-engine-sc": "^5.1.0",
     "axios": "^0.24.0",
     "iron-session": "^6.0.4",
+    "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "next": "12.0.6",
     "react": "17.0.2",
+    "react-calendar": "^3.5.0",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.20.5"
+    "react-hook-form": "^7.20.5",
+    "sassy-datepicker": "^0.6.1",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "eslint": "8.4.0",

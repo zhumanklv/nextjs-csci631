@@ -1,19 +1,37 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
+import {useCallback, useContext, useMemo, useState} from "react";
 import styles from '../styles/Home.module.css'
 import {useRouter} from "next/router";
-
+import {UserContext} from "../components/UserContext";
+import Cookies from "js-cookie";
 export default function Home() {
+    const [isClickLogIn, setIsClickLogIN] = useState(true);
+    const [_, setUser] = useContext(UserContext);
+    const onLogOut = () => {
+        Cookies.remove('access_token');
+        Cookies.remove('name');
+        Cookies.remove('surname');
+        router.push('/');
+    };
     const router = useRouter();
+
   return (
       <>
-      <div className={styles.intro}>
+          <div className={styles.intro}>
         <nav className={styles.navBar}>
           <ul className={styles.navBarList}>
                 <li className={styles.navBarListItem}><Link href="/">Home</Link></li>
-                <li className={styles.navBarListItem}><Link href="/">Rooms</Link></li>
-                <li className={styles.navBarListItem + " " + styles.listLogOut}><button onClick={() => {router.push('/login')}} className={styles.logIn}>Log In</button></li>
+                <li className={styles.navBarListItem}><Link href="/rooms">Rooms</Link></li>
+                <li className={styles.navBarListItem}><Link href="/user">Profile</Link></li>
+                { !Cookies.get('access_token') &&
+                    (<li className={styles.navBarListItem + " " + styles.listLogOut}><button onClick={() => {router.push('/login')}} className={styles.logIn}>Log In</button></li>)
+                }
+              {
+                Cookies.get('access_token') &&
+                  (<li className={styles.navBarListItem + " " + styles.listLogOut}><button onClick={onLogOut} className={styles.logIn}>Log Out</button></li>)
+              }
           </ul>
         </nav>
         <div className={styles.introMain}>
